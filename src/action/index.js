@@ -1,25 +1,35 @@
 /**
  * Created by 叶子 on 2017/7/30.
  */
-import * as type from './type';
-import * as http from '../axios/index';
+import * as constant from './../constants/HttpConstants';
+import * as http from './../axios/http';
 
 const requestData = category => ({
-    type: type.REQUEST_DATA,
+    type: constant.REQUEST_DATA,
     category
 });
-export const receiveData = (data, category) => ({
-    type: type.RECEIVE_DATA,
-    data,
-    category
-});
+
+export const receiveData = (data, category) => (
+    console.log('data == ' + data + ', category == ' + category), {
+        type: constant.RECEIVE_DATA,
+        data,
+        category
+    });
+
 /**
  * 请求数据调用方法
- * @param funcName      请求接口的函数名
- * @param params        请求接口的参数
+ * @param funcName          请求接口的函数名
+ * @param url               请求接口的url
+ * @param stateName         stateName
+ * @param params            请求接口的参数
+ * @returns {function(*)}
  */
-export const fetchData = ({funcName, params, stateName}) => dispatch => {
-    !stateName && (stateName = funcName);
+export const fetchData = ({funcName, url, stateName, params = {}}) => dispatch => {
+    console.log(`----fetchData, funcName == ${funcName}, url =  ${url}, stateName == ${stateName}, params == ${JSON.stringify(params)}`);
     dispatch(requestData(stateName));
-    return http[funcName](params).then(res => dispatch(receiveData(res, stateName)));
-};
+
+    var headers = {};
+    http[funcName]({url, headers, params})
+        .then(res => dispatch(receiveData(res.data, stateName)))
+        .catch(err => console.error(`axios http post, err = ${err}`));
+}

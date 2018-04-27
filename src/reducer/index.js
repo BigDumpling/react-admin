@@ -2,7 +2,7 @@
  * Created by 叶子 on 2017/7/30.
  */
 import { combineReducers } from 'redux';
-import * as type from '../action/type';
+import * as type from '../constants/HttpConstants';
 
 const handleData = (state = {isFetching: true, data: {}}, action) => {
     switch (action.type) {
