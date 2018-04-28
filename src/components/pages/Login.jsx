@@ -12,6 +12,12 @@ import * as url from './../../constants/RequestUrlConstants';
 const FormItem = Form.Item;
 
 class Login extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
     componentWillMount() {
         const {receiveData} = this.props;
         receiveData(null, 'auth');
@@ -21,14 +27,12 @@ class Login extends React.Component {
         const {auth: nextAuth = {}} = nextProps;
         const {history} = this.props;
 
-        console.log('Login.jsx nextProps == ' + JSON.stringify(nextProps));
         if (nextAuth.data && nextAuth.data.uid) {   // 判断是否登陆
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
 
             /**
-             * 登陆成功和跳转页面
+             * 登陆成功后跳转页面
              */
-            console.log('history == history');
             history.push('/app/dashboard/index');
         }
     }
@@ -37,7 +41,6 @@ class Login extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 const {userName, password} = values;
                 const {fetchData} = this.props;
                 fetchData({

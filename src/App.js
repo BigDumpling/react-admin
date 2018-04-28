@@ -3,10 +3,12 @@ import {Icon, Layout, notification} from 'antd';
 import './style/index.less';
 import SiderCustom from './components/SiderCustom';
 import HeaderCustom from './components/HeaderCustom';
-import {receiveData} from './action';
+import {fetchData, receiveData} from './action';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Routes from './routes';
+import * as method from './constants/HttpConstants';
+import * as url from './constants/RequestUrlConstants';
 
 /**
  * ES6解构模式，等同于 Content=Layout.Layout, Footer=Layout.Footer;
@@ -14,22 +16,36 @@ import Routes from './routes';
 const {Content, Footer} = Layout;
 
 class App extends Component {
-    state = {
-        collapsed: false,
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: false,
+        };
+
+        this.getClientWidth = this.getClientWidth.bind(this);
+        this.toggle = this.toggle.bind(this);
+    }
 
     componentWillMount() {
         const {receiveData} = this.props;
         const user = JSON.parse(localStorage.getItem('user'));
-        console.log('App.js user == ' + JSON.stringify(user));
         user && receiveData(user, 'auth');
-        // receiveData({a: 213}, 'auth');
-        // fetchData({funcName: 'admin', stateName: 'auth'});
+        const {fetchData} = this.props;
+        fetchData({
+            funcName: method.GET,
+            url: url.MENU,
+            stateName: 'menu',
+            params: {
+                userName: '',
+                system: 'CONTROL'
+            }
+        });
         this.getClientWidth();
+
         window.onresize = () => {
             console.log('屏幕变化了');
             this.getClientWidth();
-            // console.log(document.body.clientWidth);
         }
     }
 
@@ -54,14 +70,14 @@ class App extends Component {
         openNotification();
     }
 
-    getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
+    /**
+     * 获取当前浏览器宽度并设置responsive管理响应式
+     */
+    getClientWidth = () => {
         const {receiveData} = this.props;
-        console.log('App.js receiveData == ' + JSON.stringify(receiveData))
         const clientWidth = document.body.clientWidth;
         console.log(clientWidth);
         receiveData(false, 'responsive');
-        console.log('App.js receiveData2 == ' + JSON.stringify(receiveData))
-
     };
     toggle = () => {
         this.setState({
@@ -70,14 +86,14 @@ class App extends Component {
     };
 
     render() {
-        const {auth, responsive} = this.props;
-        console.log('App.js auth == ' + JSON.stringify(auth));
-        console.log('App.js responsive == ' + JSON.stringify(responsive));
+        const prop = this.props;
+        const state = this.state;
+        const {auth, responsive, menu} = prop;
         return (
             <Layout>
-                <SiderCustom collapsed={this.state.collapsed}/>
+                <SiderCustom collapsed={state.collapsed} menu={menu.data}/>
                 <Layout style={{flexDirection: 'column'}}>
-                    <HeaderCustom toggle={this.toggle} collapsed={this.state.collapsed} user={auth.data || {}}/>
+                    <HeaderCustom toggle={this.toggle} collapsed={state.collapsed} user={auth.data || {}}/>
                     <Content style={{margin: '0 16px', overflow: 'initial'}}>
                         <Routes auth={auth}/>
                     </Content>
@@ -96,16 +112,16 @@ const mapStateToProps = state => {
      * ES6解构模式，等同于 let auth = {data: {}}; let responsive = {data: {}}; auth = state.httpData.auth; responsive = state.httpData.responsive;
      * @type {{data: {}}}
      */
-    console.log('state == ' + JSON.stringify(state));
-    const {auth = {data: {}}, responsive = {data: {}}} = state.httpData;
+    const {auth = {data: {}}, responsive = {data: {}}, menu = {}} = state.httpData;
 
     /**
      * ES6对象扩展，等同于 let auth=**; let responsive=**; return {auth: auth, responsive: responsive};
      */
-    return {auth, responsive};
+    return {auth, responsive, menu};
 };
 const mapDispatchToProps = dispatch => ({
-    receiveData: bindActionCreators(receiveData, dispatch)
+    receiveData: bindActionCreators(receiveData, dispatch),
+    fetchData: bindActionCreators(fetchData, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
