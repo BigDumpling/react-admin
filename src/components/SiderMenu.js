@@ -1,37 +1,37 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import {Icon, Menu} from 'antd';
+import {Link} from 'react-router-dom';
 
 const renderMenuItem =
-    ({ key, title, icon, link, ...props }) =>
+    ({id, url, name, icon, link, ...props}) =>
         <Menu.Item
-            key={key || link}
+            key={id}
             {...props}
         >
-            <Link to={link || key}>
-                {icon && <Icon type={icon} />}
-                <span className="nav-text">{title}</span>
+            <Link to={link || url}>
+                {icon && <Icon type={icon}/>}
+                <span className="nav-text">{name}</span>
             </Link>
         </Menu.Item>;
 
 const renderSubMenu =
-    ({ key, title, icon, link, sub, ...props }) =>
+    ({id, url, name, icon, link, subMenus, ...props}) =>
         <Menu.SubMenu
-            key={key || link}
+            key={id}
             title={
                 <span>
-                    {icon && <Icon type={icon} />}
-                    <span className="nav-text">{title}</span>
+                    {icon && <Icon type={icon}/>}
+                    <span className="nav-text">{name}</span>
                 </span>
             }
             {...props}
         >
-            {sub && sub.map(item => renderMenuItem(item))}
+            {subMenus && subMenus.map(item => renderMenuItem(item))}
         </Menu.SubMenu>;
 
-export default ({ menus, ...props }) => <Menu {...props}>
+export default ({menus, ...props}) => <Menu {...props}>
     {menus && menus.map(
-        item => item.sub && item.sub.length > 0 ?
+        item => item.subMenus && item.subMenus.length > 0 ?
             renderSubMenu(item) : renderMenuItem(item)
     )}
 </Menu>;

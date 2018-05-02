@@ -3,7 +3,6 @@
  */
 import * as constant from './../constants/HttpConstants';
 import * as http from './../axios/http';
-import {menus} from './../constants/menus';
 
 const requestData = category => ({
     type: constant.REQUEST_DATA,
@@ -25,17 +24,24 @@ export const receiveData = (data, category) => (
  * @param params            请求接口的参数
  * @returns {function(*)}
  */
-export const fetchData = ({funcName, url, stateName, params = {}}) => dispatch => {
+export const fetchData = ({funcName, url, stateName, params = {}, variable = false}) => dispatch => {
     console.log(`----fetchData, funcName == ${funcName}, url =  ${url}, stateName == ${stateName}, params == ${JSON.stringify(params)}`);
     dispatch(requestData(stateName));
 
-    if (Object.is(stateName, 'menu')) {
-        dispatch(receiveData(menus, stateName));
-        return menus;
-    } else {
-        var headers = {};
+    var headers = {
+        'Content-Type': 'application/json;charset=UTF-8'
+    };
+
+    if (!variable) {
         http[funcName]({url, headers, params})
             .then(res => dispatch(receiveData(res.data, stateName)))
             .catch(err => console.error(`axios http post, err = ${err}`));
+    } else {
+        const variableUrl = `${url}/${params}`;
+        console.log(`variableUrl == ${variableUrl}`);
+        http[funcName]({url: variableUrl, headers:{}})
+            .then(res => dispatch(receiveData(res.data, stateName)))
+            .catch(err => console.error(`axios http post, err = ${err}`));
     }
+
 }

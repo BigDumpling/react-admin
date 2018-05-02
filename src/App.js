@@ -7,7 +7,7 @@ import {fetchData, receiveData} from './action';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Routes from './routes';
-import * as method from './constants/HttpConstants';
+import * as method from './constants/HttpMethod';
 import * as url from './constants/RequestUrlConstants';
 
 /**
@@ -36,10 +36,8 @@ class App extends Component {
             funcName: method.GET,
             url: url.MENU,
             stateName: 'menu',
-            params: {
-                userName: '',
-                system: 'CONTROL'
-            }
+            params: `${user.userName}/CONTROL`,
+            variable: true
         });
         this.getClientWidth();
 

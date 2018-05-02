@@ -27,10 +27,10 @@ export const get = ({url, headers = {}, params = {}}) => {
  * @param data          接口参数
  * @returns {Promise<AxiosResponse>}
  */
-export const post = ({url, headers = {}, data = {}}) => {
-    console.log(`axios http post, url = ${url}, headers = ${JSON.stringify(headers)}, data = ${JSON.stringify(data)}`);
+export const post = ({url, headers = {}, params = {}}) => {
+    console.log(`axios http post, url = ${url}, headers = ${JSON.stringify(headers)}, data = ${JSON.stringify(params)}`);
 
-    return axios.post(url, data, headers).then(res => {
+    return axios.post(url, params, headers).then(res => {
         console.log(`axios http post, res = ${JSON.stringify(res)}`);
         return res;
     }).catch(err => {

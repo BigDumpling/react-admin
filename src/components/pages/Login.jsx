@@ -6,7 +6,7 @@ import {Button, Form, Icon, Input} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {fetchData, receiveData} from './../../action';
-import * as method from './../../constants/HttpConstants';
+import * as method from './../../constants/HttpMethod';
 import * as url from './../../constants/RequestUrlConstants';
 
 const FormItem = Form.Item;
@@ -27,9 +27,10 @@ class Login extends React.Component {
         const {auth: nextAuth = {}} = nextProps;
         const {history} = this.props;
 
-        if (nextAuth.data && nextAuth.data.uid) {   // 判断是否登陆
+        console.log(`是否登陆判断 ${JSON.stringify(nextProps)}`);
+        if (nextAuth.data && nextAuth.data.token) {   // 判断是否登陆
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
-
+            console.log('是否登陆判断2');
             /**
              * 登陆成功后跳转页面
              */
@@ -41,13 +42,13 @@ class Login extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const {userName, password} = values;
+                const {userName, passWord} = values;
                 const {fetchData} = this.props;
                 fetchData({
-                    funcName: method.GET,
+                    funcName: method.POST,
                     url: url.LOGIN,
                     stateName: 'auth',
-                    params: {userName, password}
+                    params: {userName, passWord}
                 });
             }
         });
@@ -71,7 +72,7 @@ class Login extends React.Component {
                             )}
                         </FormItem>
                         <FormItem>
-                            {getFieldDecorator('password', {
+                            {getFieldDecorator('passWord', {
                                 rules: [{required: true, message: '请输入密码!'}],
                             })(
                                 <Input prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="password"
@@ -100,6 +101,8 @@ class Login extends React.Component {
 
 const mapStateToPorps = state => {
     const {auth} = state.httpData;
+    console.log(`Login mapStateToPorps, auth == ${JSON.stringify(auth)}`)
+
     return {auth};
 };
 const mapDispatchToProps = dispatch => ({
