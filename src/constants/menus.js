@@ -193,7 +193,7 @@ export const menus = [
                 "method": "GET",
                 "name": "文件管理",
                 "order": 1,
-                "url": "/file/info/main",
+                "url": "/app/file/info/main",
                 "icon": null,
                 "subMenus": []
             },

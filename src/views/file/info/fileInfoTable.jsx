@@ -2,22 +2,30 @@
  * Created by hao.cheng on 2017/4/15.
  */
 import React from 'react';
-import {Button, Form, Input, Table} from 'antd';
-import {fileinfos} from './../../constants/fileinfo';
-import UploadModal from './../forms/UploadModal';
+import {Form, Table} from 'antd';
+import UploadModal from './UploadModal';
+import * as method from "../../../constants/HttpMethod";
+import * as url from "../../../constants/RequestUrlConstants";
+import {fetchData} from '../../../action/index';
+import {connect} from "react-redux";
+import {bindActionCreators} from 'redux';
+import WrappedAdvancedSearchForm from './../../../components/forms/AdvancedSearchForm';
+
 
 const FormItem = Form.Item;
 
 const columns = [
-    {title: '编号', dataIndex: 'id',},
-    {title: '文件名', dataIndex: 'fileName',},
-    {title: '文件路径', dataIndex: 'filePath',},
+    {key: 'id', title: '编号', dataIndex: 'id',},
+    {key: 'fileName', title: '文件名', dataIndex: 'fileName',},
+    {key: 'filePath', title: '文件路径', dataIndex: 'filePath',},
     {
+        key: 'fileSize',
         title: '文件大小', dataIndex: 'fileSize', render: (text) => {
             return text + ' KB';
         }
     },
     {
+        key: 'excuteType',
         title: '文件类型', dataIndex: 'excuteType', render: (text) => {
             switch (text) {
                 case 0 :
@@ -39,6 +47,7 @@ const columns = [
         }
     },
     {
+        key: 'ufsResult',
         title: '上传结果', dataIndex: 'ufsResult', render: (text) => {
             switch (text) {
                 case 0 :
@@ -55,6 +64,7 @@ const columns = [
         }
     },
     {
+        key: 'analyResult',
         title: '解析结果', dataIndex: 'analyResult', render: (text) => {
             switch (text) {
                 case 0 :
@@ -71,6 +81,7 @@ const columns = [
         }
     },
     {
+        key: 'batchResult',
         title: '执行结果', dataIndex: 'batchResult', render: (text) => {
             switch (text) {
                 case 0 :
@@ -86,8 +97,8 @@ const columns = [
             }
         }
     },
-    {title: '创建者', dataIndex: 'createBy',},
-    {title: '创建时间', dataIndex: 'createTime',},
+    {key: 'createBy', title: '创建者', dataIndex: 'createBy',},
+    {key: 'createTime', title: '创建时间', dataIndex: 'createTime',},
     {
         title: '操作', render: () => {
             return '重新解析';
@@ -96,76 +107,63 @@ const columns = [
 
 ];
 
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
-
-const ConditionForm = Form.create({
-    onFieldsChange(props, changedFields) {
-        props.onChange(changedFields);
-    },
-    mapPropsToFields(props) {
-        return {
-            fileName: Form.createFormField({
-                ...props.fileName,
-                value: props.fileName.value,
-            })
-        };
-    },
-    onValuesChange(_, values) {
-        console.log(values);
-    },
-})((props) => {
-    const {getFieldDecorator} = props.form;
-    return (
-        <Form layout="inline">
-            <FormItem label='文件名'>
-                {getFieldDecorator('fileName', {})(
-                    <Input placeholder='文件名'/>
-                )}
-            </FormItem>
-            <FormItem>
-                <Button
-                    type='primary'
-                    htmlType='submit'
-                >
-                    查询
-                </Button>
-            </FormItem>
-        </Form>
-    );
-});
+const items = [
+    {label: '文件名', field: 'fileName'}
+];
 
 class FileInfoTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             ids: [],
-            fields: {
-                fileName: {
-                    value: ''
-                }
-            }
         };
-        this.handleFormChange = this.handleFormChange.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.handleGetList = this.handleGetList.bind(this);
     }
 
-    handleFormChange = (changedFields) => {
-        this.setState(({fields}) => ({
-            fields: {...fields, ...changedFields},
-        }));
+    componentWillMount() {
+        this.handleGetList({});
+    }
+
+    handlePageChange = (page, pageSize) => {
+        console.log(`----page == ${page}, pageSize == ${pageSize}`);
+        this.handleGetList({});
+    }
+
+    handleGetList = (params) => {
+        const {fetchData} = this.props;
+        fetchData({
+            funcName: method.POST,
+            url: url.LOGIN,
+            stateName: 'fileInfo',
+            params: params
+        });
     }
 
     render() {
-        const fields = this.state.fields;
+        const {fileInfo} = this.props;
+        const pagination = {
+            position: 'bottom',
+            showSizeChanger: true,
+            onChange: this.handlePageChange,
+            onShowSizeChange: this.handlePageChange,
+        };
         return (
             <div>
-                <ConditionForm {...fields} onChange={this.handleFormChange}/>
-                <UploadModal />
-                <Table rowKey='id' columns={columns} dataSource={fileinfos}/>
+                <WrappedAdvancedSearchForm item={items}></WrappedAdvancedSearchForm>
+                <UploadModal/>
+                <Table rowKey='id' columns={columns} dataSource={Array.from(fileInfo.data)} pagination={pagination}/>
             </div>
         );
     }
 }
 
-export default FileInfoTable;
+const mapStateToProps = state => {
+    const {fileInfo = {data: {}}} = state.httpData;
+    return {fileInfo};
+};
+const mapDispatchToProps = dispatch => ({
+    fetchData: bindActionCreators(fetchData, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FileInfoTable);
