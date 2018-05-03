@@ -29,6 +29,7 @@ import Bundle from '../components/widget/Bundle';
 import Cssmodule from '../components/cssmodule';
 import MapUi from '../components/ui/map';
 import AssetAllocationStrategy from '../views/products/assetAllocationStrategy';
+import FileInfoTable from '../components/tables/fileInfoTable';
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -52,7 +53,8 @@ export default class CRouter extends Component {
 
                 <Route exact path="/app/dashboard/index" component={Dashboard}/>
                 <Route exact path="/app/form/basicForm" component={BasicForm}/>
-                <Route exact path="/app/table/basicTable" component={BasicTable}/>
+                <Route exact path="/app/table/basicTable" component={FileInfoTable}/>
+                <Route exact path="/index" component={BasicTable}/>
                 <Route exact path="/app/table/advancedTable" component={AdvancedTable}/>
                 <Route exact path="/app/table/asynchronousTable" component={AsynchronousTable}/>
                 <Route exact path="/app/chart/echarts" component={Echarts}/>
@@ -80,6 +82,10 @@ export default class CRouter extends Component {
                 <Route exact path="/app/cssModule" component={Cssmodule}/>
 
                 <Route render={() => <Redirect to="/404"/>}/>
+
+
+                <Route exact path="/file/info/main" component={Dashboard}/>
+
             </Switch>
         )
     }
