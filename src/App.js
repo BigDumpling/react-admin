@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux';
 import Routes from './routes';
 import * as method from './constants/HttpMethod';
 import * as url from './constants/RequestUrlConstants';
+import {menus} from './constants/menus';
 
 /**
  * ES6解构模式，等同于 Content=Layout.Layout, Footer=Layout.Footer;
@@ -32,13 +33,13 @@ class App extends Component {
         const user = JSON.parse(localStorage.getItem('user'));
         user && receiveData(user, 'auth');
         const {fetchData} = this.props;
-        fetchData({
-            funcName: method.GET,
-            url: url.MENU,
-            stateName: 'menu',
-            params: `${user.userName}/CONTROL`,
-            variable: true
-        });
+        // fetchData({
+        //     funcName: method.GET,
+        //     url: url.MENU,
+        //     stateName: 'menu',
+        //     params: `${user.userName}/CONTROL`,
+        //     variable: true
+        // });
         this.getClientWidth();
 
         window.onresize = () => {
@@ -86,10 +87,10 @@ class App extends Component {
     render() {
         const prop = this.props;
         const state = this.state;
-        const {auth, responsive, menu} = prop;
+        const {auth, menu} = prop;
         return (
             <Layout>
-                <SiderCustom collapsed={state.collapsed} menu={menu.data}/>
+                <SiderCustom collapsed={state.collapsed} menu={menus}/>
                 <Layout style={{flexDirection: 'column'}}>
                     <HeaderCustom toggle={this.toggle} collapsed={state.collapsed} user={auth.data || {}}/>
                     <Content style={{margin: '0 16px', overflow: 'initial'}}>

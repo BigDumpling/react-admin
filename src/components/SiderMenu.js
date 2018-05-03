@@ -29,9 +29,9 @@ const renderSubMenu =
             {subMenus && subMenus.map(item => renderMenuItem(item))}
         </Menu.SubMenu>;
 
-export default ({menus, ...props}) => <Menu {...props}>
-    {menus && menus.map(
-        item => item.subMenus && item.subMenus.length > 0 ?
+export default ({menu, ...props}) => <Menu {...props}>
+    {menu && menu.map(
+        (item) => item.subMenus && item.subMenus.length > 0 ?
             renderSubMenu(item) : renderMenuItem(item)
     )}
 </Menu>;

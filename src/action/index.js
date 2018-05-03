@@ -39,7 +39,7 @@ export const fetchData = ({funcName, url, stateName, params = {}, variable = fal
     } else {
         const variableUrl = `${url}/${params}`;
         console.log(`variableUrl == ${variableUrl}`);
-        http[funcName]({url: variableUrl, headers:{}})
+        http[funcName]({url: variableUrl, headers: {}})
             .then(res => dispatch(receiveData(res.data, stateName)))
             .catch(err => console.error(`axios http post, err = ${err}`));
     }

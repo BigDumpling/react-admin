@@ -32,7 +32,6 @@ class SiderCustom extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         this.onCollapse(nextProps.collapsed);
         this.setMenuOpen(nextProps)
     }
@@ -56,7 +55,6 @@ class SiderCustom extends Component {
         this.setState({
             selectedKey: e.key
         });
-        console.log(this.state);
         const {popoverHide} = this.props;     // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
         popoverHide && popoverHide();
     };
@@ -75,12 +73,12 @@ class SiderCustom extends Component {
             <Sider
                 trigger={null}
                 breakpoint="lg"
-                collapsed={this.props.collapsed}
+                collapsed={props.collapsed}
                 style={{overflowY: 'auto'}}
             >
                 <div className="logo"/>
                 <SiderMenu
-                    menus={props.menu}
+                    menu={props.menu}
                     onClick={this.menuClick}
                     theme="dark"
                     mode="inline"
