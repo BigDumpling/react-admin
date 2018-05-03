@@ -6,7 +6,7 @@ export const menus = [
         "method": "GET",
         "name": "首页",
         "order": 1,
-        "url": "/index.htm",
+        "url": "/index",
         "icon": null,
         "subMenus": []
     },
@@ -193,7 +193,7 @@ export const menus = [
                 "method": "GET",
                 "name": "文件管理",
                 "order": 1,
-                "url": "/file/info/main.htm",
+                "url": "/file/info/main",
                 "icon": null,
                 "subMenus": []
             },
