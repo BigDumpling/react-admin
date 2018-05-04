@@ -1430,7 +1430,7 @@ export const menus = [
                 "method": "GET",
                 "name": "福利券规则",
                 "order": 4,
-                "url": "/market/rule/main.htm",
+                "url": "/app/market/rule/main",
                 "icon": null,
                 "subMenus": []
             },

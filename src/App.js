@@ -9,7 +9,6 @@ import {bindActionCreators} from 'redux';
 import Routes from './routes';
 import * as method from './constants/HttpMethod';
 import * as url from './constants/RequestUrlConstants';
-import {menus} from './constants/menus';
 
 /**
  * ES6解构模式，等同于 Content=Layout.Layout, Footer=Layout.Footer;
@@ -75,7 +74,6 @@ class App extends Component {
     getClientWidth = () => {
         const {receiveData} = this.props;
         const clientWidth = document.body.clientWidth;
-        console.log(clientWidth);
         receiveData(false, 'responsive');
     };
     toggle = () => {
@@ -85,9 +83,8 @@ class App extends Component {
     };
 
     render() {
-        const prop = this.props;
         const state = this.state;
-        const {auth, menu} = prop;
+        const {auth, menu} = this.props;
         return (
             <Layout>
                 <SiderCustom collapsed={state.collapsed} menu={menu}/>

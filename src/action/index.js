@@ -5,6 +5,7 @@ import * as constant from './../constants/HttpConstants';
 import * as http from './../axios/http';
 import {fileinfos} from './../constants/fileinfo';
 import {menus} from './../constants/menus';
+import {rules} from './../constants/marketRule';
 
 const requestData = category => ({
     type: constant.REQUEST_DATA,
@@ -12,7 +13,7 @@ const requestData = category => ({
 });
 
 export const receiveData = (data, category) => (
-    console.log(`------receiveData, data == ${JSON.stringify(data)}, category == ${category}`), {
+    {
         type: constant.RECEIVE_DATA,
         data,
         category
@@ -34,16 +35,20 @@ export const fetchData = ({funcName, url, stateName, params = {}, variable = fal
         'Content-Type': 'application/json;charset=UTF-8'
     };
 
-    if(Object.is('fileInfo', stateName)){
-        dispatch(receiveData(fileinfos, stateName));
-        return;
-    }
-
-    if(Object.is('menu', stateName)){
+    if (Object.is('menu', stateName)) {
         dispatch(receiveData(menus, stateName));
         return;
     }
 
+    if (Object.is('fileInfo', stateName)) {
+        dispatch(receiveData(fileinfos, stateName));
+        return;
+    }
+
+    if (Object.is('rules'), stateName) {
+        dispatch(receiveData(rules, stateName));
+        return;
+    }
 
     if (!variable) {
         http[funcName]({url, headers, params})

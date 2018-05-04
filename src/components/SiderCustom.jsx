@@ -69,8 +69,6 @@ class SiderCustom extends Component {
     render() {
         const props = this.props;
         const state = this.state;
-
-        console.log(`------------menu  props == ${JSON.stringify(props.menu)}`);
         return (
             <Sider
                 trigger={null}

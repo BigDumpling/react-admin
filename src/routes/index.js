@@ -30,6 +30,7 @@ import MapUi from '../components/ui/map';
 import AssetAllocationStrategy from '../views/products/assetAllocationStrategy';
 import FileInfoTable from '../views/file/info/fileInfoTable';
 import FileInfoTable2 from '../views/file/info/fileInfoTable2';
+import MarketRuleTable from '../views/market/rule/rule';
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -53,6 +54,7 @@ export default class CRouter extends Component {
                        component={AssetAllocationStrategy}/>
                 <Route exact path="/app/file/info/main" component={FileInfoTable}/>
                 <Route exact path="/app/file/info/main2" component={FileInfoTable2}/>
+                <Route exact path="/app/market/rule/main" component={MarketRuleTable}/>
 
                 <Route exact path="/app/dashboard/index" component={Dashboard}/>
                 <Route exact path="/app/form/basicForm" component={BasicForm}/>

@@ -5,8 +5,6 @@ import {combineReducers} from 'redux';
 import * as type from '../constants/HttpConstants';
 
 const handleData = (state = {isFetching: true, data: {}}, action) => {
-    console.log(`httpData handleData, state == ${JSON.stringify(state)}, action == ${JSON.stringify(action)}`);
-
     switch (action.type) {
         case type.REQUEST_DATA:
             return {...state, isFetching: true};
@@ -18,7 +16,6 @@ const handleData = (state = {isFetching: true, data: {}}, action) => {
 };
 const httpData = (state = {}, action) => {
     console.log(`httpData httpData, state == ${JSON.stringify(state)}, action == ${JSON.stringify(action)}`);
-
     switch (action.type) {
         case type.RECEIVE_DATA:
         case type.REQUEST_DATA:
