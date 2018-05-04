@@ -33,13 +33,13 @@ class App extends Component {
         const user = JSON.parse(localStorage.getItem('user'));
         user && receiveData(user, 'auth');
         const {fetchData} = this.props;
-        // fetchData({
-        //     funcName: method.GET,
-        //     url: url.MENU,
-        //     stateName: 'menu',
-        //     params: `${user.userName}/CONTROL`,
-        //     variable: true
-        // });
+        fetchData({
+            funcName: method.GET,
+            url: url.MENU,
+            stateName: 'menu',
+            params: `super/CONTROL`,
+            variable: true
+        });
         this.getClientWidth();
 
         window.onresize = () => {
@@ -90,7 +90,7 @@ class App extends Component {
         const {auth, menu} = prop;
         return (
             <Layout>
-                <SiderCustom collapsed={state.collapsed} menu={menus}/>
+                <SiderCustom collapsed={state.collapsed} menu={menu}/>
                 <Layout style={{flexDirection: 'column'}}>
                     <HeaderCustom toggle={this.toggle} collapsed={state.collapsed} user={auth.data || {}}/>
                     <Content style={{margin: '0 16px', overflow: 'initial'}}>
@@ -111,7 +111,7 @@ const mapStateToProps = state => {
      * ES6解构模式，等同于 let auth = {data: {}}; let responsive = {data: {}}; auth = state.httpData.auth; responsive = state.httpData.responsive;
      * @type {{data: {}}}
      */
-    const {auth = {data: {}}, responsive = {data: {}}, menu = {}} = state.httpData;
+    const {auth = {data: {}}, responsive = {data: {}}, menu = {data: {}}} = state.httpData;
 
     /**
      * ES6对象扩展，等同于 let auth=**; let responsive=**; return {auth: auth, responsive: responsive};

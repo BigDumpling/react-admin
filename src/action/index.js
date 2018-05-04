@@ -3,6 +3,8 @@
  */
 import * as constant from './../constants/HttpConstants';
 import * as http from './../axios/http';
+import {fileinfos} from './../constants/fileinfo';
+import {menus} from './../constants/menus';
 
 const requestData = category => ({
     type: constant.REQUEST_DATA,
@@ -31,6 +33,17 @@ export const fetchData = ({funcName, url, stateName, params = {}, variable = fal
     var headers = {
         'Content-Type': 'application/json;charset=UTF-8'
     };
+
+    if(Object.is('fileInfo', stateName)){
+        dispatch(receiveData(fileinfos, stateName));
+        return;
+    }
+
+    if(Object.is('menu', stateName)){
+        dispatch(receiveData(menus, stateName));
+        return;
+    }
+
 
     if (!variable) {
         http[funcName]({url, headers, params})

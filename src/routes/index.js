@@ -5,7 +5,6 @@ import React, {Component} from 'react';
 // import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import BasicForm from '../components/forms/BasicForm';
-import BasicTable from '../components/tables/BasicTables';
 import AdvancedTable from '../components/tables/AdvancedTables';
 import AsynchronousTable from '../components/tables/AsynchronousTable';
 import Echarts from '../components/charts/Echarts';
@@ -30,6 +29,8 @@ import Cssmodule from '../components/cssmodule';
 import MapUi from '../components/ui/map';
 import {AssetAllocationStrategy, AasDetails} from '../views/products/assetAllocationStrategy';
 import FileInfoTable from '../components/tables/fileInfoTable';
+import FileInfoTable from '../views/file/info/fileInfoTable';
+import FileInfoTable2 from '../views/file/info/fileInfoTable2';
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -52,10 +53,11 @@ export default class CRouter extends Component {
                 <Route exact path="/app/prodmgnt/aas" component={AssetAllocationStrategy}/>
                 <Route exact path="/app/prodmgnt/aas/details" component={AasDetails}/>
 
+                <Route exact path="/app/file/info/main" component={FileInfoTable}/>
+                <Route exact path="/app/file/info/main2" component={FileInfoTable2}/>
+
                 <Route exact path="/app/dashboard/index" component={Dashboard}/>
                 <Route exact path="/app/form/basicForm" component={BasicForm}/>
-                <Route exact path="/app/table/basicTable" component={FileInfoTable}/>
-                <Route exact path="/index" component={BasicTable}/>
                 <Route exact path="/app/table/advancedTable" component={AdvancedTable}/>
                 <Route exact path="/app/table/asynchronousTable" component={AsynchronousTable}/>
                 <Route exact path="/app/chart/echarts" component={Echarts}/>
@@ -83,9 +85,6 @@ export default class CRouter extends Component {
                 <Route exact path="/app/cssModule" component={Cssmodule}/>
 
                 <Route render={() => <Redirect to="/404"/>}/>
-
-
-                <Route exact path="/file/info/main" component={Dashboard}/>
 
             </Switch>
         )

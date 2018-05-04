@@ -69,6 +69,8 @@ class SiderCustom extends Component {
     render() {
         const props = this.props;
         const state = this.state;
+
+        console.log(`------------menu  props == ${JSON.stringify(props.menu)}`);
         return (
             <Sider
                 trigger={null}
@@ -78,7 +80,7 @@ class SiderCustom extends Component {
             >
                 <div className="logo"/>
                 <SiderMenu
-                    menu={props.menu}
+                    menu={props.menu.data}
                     onClick={this.menuClick}
                     theme="dark"
                     mode="inline"
