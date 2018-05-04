@@ -28,7 +28,7 @@ import Wysiwyg from 'bundle-loader?lazy!../components/ui/Wysiwyg'; // 按需加�
 import Bundle from '../components/widget/Bundle';
 import Cssmodule from '../components/cssmodule';
 import MapUi from '../components/ui/map';
-import AssetAllocationStrategy from '../views/products/assetAllocationStrategy';
+import {AssetAllocationStrategy, AasDetails} from '../views/products/assetAllocationStrategy';
 import FileInfoTable from '../components/tables/fileInfoTable';
 
 const WysiwygBundle = (props) => (
@@ -49,7 +49,8 @@ export default class CRouter extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/app/productsManagement/assetAllocationStrategy" component={AssetAllocationStrategy}/>
+                <Route exact path="/app/prodmgnt/aas" component={AssetAllocationStrategy}/>
+                <Route exact path="/app/prodmgnt/aas/details" component={AasDetails}/>
 
                 <Route exact path="/app/dashboard/index" component={Dashboard}/>
                 <Route exact path="/app/form/basicForm" component={BasicForm}/>

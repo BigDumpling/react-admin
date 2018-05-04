@@ -1,7 +1,9 @@
 import React from 'react'
 import { Table, Button, Input, Icon, Popconfirm, Divider } from 'antd'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
-import AddPageButton from './AddPageButton'
+import {AddPageButton, EditLink} from './ModalFormTriggers'
+import AasDetails from './AasDetails'
 
 const datalst = {
 	"data": [{
@@ -139,6 +141,59 @@ const datalst = {
 	"recordsTotal": 98
 }
 
+const expandedRowRender = (record) => {
+    const columns = [
+        { title: '资产配置策略编号', dataIndex: 'strategyId', key: 'strategyId' },
+        { title: '一级分类码', dataIndex: 'firstCode', key: 'firstCode' },
+        { title: '二级分类码', dataIndex: 'secondCode', key: 'secondCode' },
+        { title: '三级分类码', dataIndex: 'thirdCode', key: 'thirdCode' },
+        { title: '四级分类码', dataIndex: 'thirdCode', key: 'thirdCode' },
+        { title: '分配比率', dataIndex: 'proportion', key: 'proportion' },
+        { title: '状态', dataIndex: 'status', key: 'status' },
+        { title: '是否可编辑', dataIndex: 'editable', key: 'editable' },
+        { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
+        { title: '修改时间', dataIndex: 'modifyTime', key: 'modifyTime' },
+        {
+            title: '操作',
+            dataIndex: 'operation',
+            key: 'operation',
+            render: (text, record) => {
+                return (
+                    <div>
+                        <Popconfirm title="Sure to delete?" onConfirm={() => console.log('1111111')}>
+                            <a href="javascript:;">删除</a>
+                        </Popconfirm>
+                    </div>
+                )
+            }
+        }
+    ]
+
+    let data = []
+    for (let i = 0; i < 2; i++) {
+        data.push({
+            strategyId: record.id,
+            firstCode: 1,
+            secondCode: 2, 
+            thirdCode: 3,
+            proportion: 0.3,
+            status: "有效",
+            editable: 'true',
+            createTime: '2017-03-25 21:13:00',
+            modifyTime: '2017-11-10 20:03:01'
+        })
+    }
+    
+
+    return (
+        <Table 
+            columns={columns} 
+            dataSource={data}
+            pagination={false}
+        />
+    )
+}
+
 class AssetAllocationStrategy extends React.Component {
     constructor(props) {
         super(props)
@@ -252,13 +307,17 @@ class AssetAllocationStrategy extends React.Component {
                 dataIndex: 'operation',
                 key: 'operation',
                 render: (text, record) => {
+                    const path = {
+                        pathname: '/app/prodmgnt/aas/details',
+                        state: {
+                            record
+                        }
+                    }
                     return (
                         <div>
-                            <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record)}>
-                                <a href="javascript:;">删除</a>
-                            </Popconfirm>
+                            <Link to={path}>明细</Link>
                             <Divider type="vertical" />
-                            <a href="javascript:;" onClick={() => this.handleEdit(record)}>编辑</a>
+                            <EditLink entity={record} />
                         </div>
                     )
                 }
@@ -280,7 +339,14 @@ class AssetAllocationStrategy extends React.Component {
         return (
             <div className="asset-allocation-strategy">
                 <AddPageButton />
-                <Table columns={columns} dataSource={this.state.data} rowSelection={rowSelection} rowKey="id"/>
+                <Table 
+                    columns={columns} 
+                    dataSource={this.state.data} 
+                    rowSelection={rowSelection} 
+                    rowKey="id" 
+                    //expandedRowRender={expandedRowRender}
+                    className="components-table-demo-nested"
+                />
                 <style>{`
                     .asset-allocation-strategy {
                         margin-top: 8px;
@@ -296,9 +362,37 @@ class AssetAllocationStrategy extends React.Component {
                         width: 130px;
                         margin-right: 8px;
                     }
+
+                    .components-table-demo-nested .ant-table-expanded-row > td:last-child {
+                        padding: 0 48px 0 8px;
+                    }
                       
-                    .highlight {
-                        color: #f50;
+                    .components-table-demo-nested .ant-table-expanded-row > td:last-child .ant-table-thead th {
+                        border-bottom: 1px solid #e9e9e9;
+                    }
+                      
+                    .components-table-demo-nested .ant-table-expanded-row > td:last-child .ant-table-thead th:first-child {
+                        padding-left: 0;
+                    }
+                      
+                    .components-table-demo-nested .ant-table-expanded-row > td:last-child .ant-table-row td:first-child {
+                        padding-left: 0;
+                    }
+                      
+                    .components-table-demo-nested .ant-table-expanded-row .ant-table-row:last-child td {
+                        border: none;
+                    }
+                      
+                    .components-table-demo-nested .ant-table-expanded-row .ant-table-thead > tr > th {
+                        background: none;
+                    }
+                      
+                    .components-table-demo-nested .table-operation a:not(:last-child) {
+                        margin-right: 24px;
+                    }
+                      
+                    .components-table-demo-nested .ant-table-expanded-row:hover > td {
+                        background: #fbfbfb;
                     }
                 `}</style>
             </div>
@@ -308,4 +402,4 @@ class AssetAllocationStrategy extends React.Component {
 
 
 
-export default AssetAllocationStrategy
+export {AssetAllocationStrategy, AasDetails}
