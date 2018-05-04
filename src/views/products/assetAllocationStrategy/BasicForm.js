@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal, Form, Input, Radio, Select } from 'antd'
+import { Button, Modal, Form, Input, Select } from 'antd'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -7,13 +7,16 @@ const FormItem = Form.Item
 const BasicForm = Form.create()(class extends React.Component {
     componentDidMount() {
         const { entity } = this.props
+        let propsObj = {}
         if (entity) {
             for (let prop in entity) {
                 if (entity.hasOwnProperty(prop)) {
-
+                    propsObj[prop] = entity[prop]
                 }
             }
         }
+        console.log('propsObj', propsObj)
+        this.props.form.setFieldsValue(propsObj)
     }
     render() {
         const { visible, onCancel, onCreate, form, title } = this.props
@@ -106,82 +109,4 @@ const BasicForm = Form.create()(class extends React.Component {
 })
 
 
-class AddPageButton extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.showModal = this.showModal.bind(this)
-        this.handleCreate = this.handleCreate.bind(this)
-        this.handleCancel = this.handleCancel.bind(this)
-        this.saveFormRef = this.saveFormRef.bind(this)
-        
-        this.state = {
-            visible: false,
-            confirmLoading: false
-        }
-    }
-
-    showModal() {
-        this.setState({
-            visible: true
-        })
-    }
-
-    handleCreate() {
-        this.setState({
-            confirmLoading: true
-        })
-
-        const form = this.formRef.props.form
-        form.validateFields((err, values) => {
-            if (err) {
-                return
-            }
-
-            console.log('Form is: ', form)
-            //console.log('Received values of form: ', values);
-
-            form.resetFields();
-            console.log('Changed form is: ', form)
-            this.setState({ 
-                visible: false, 
-                confirmLoading: false 
-            })
-        })
-    }
-
-    handleCancel() {
-        const form = this.formRef.props.form;
-        form.resetFields();
-        this.setState({
-            visible: false
-        })
-    }
-
-    saveFormRef(formRef) {
-        this.formRef = formRef;
-    }
-
-    render() {
-        const { visible, confirmLoading } = this.state
-        return (
-            <div>
-                <Button type="primary" onClick={this.showModal} className="editable-add-btn">添加</Button>
-                <BasicForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                />
-                <style>{`
-                    .editable-add-btn {
-                        margin-bottom: 8px;
-                    }
-                `}
-                </style>
-            </div>
-        )
-    }
-}
-
-export default AddPageButton
+export default BasicForm

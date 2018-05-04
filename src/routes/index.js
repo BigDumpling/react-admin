@@ -27,7 +27,8 @@ import Wysiwyg from 'bundle-loader?lazy!../components/ui/Wysiwyg'; // 按需加�
 import Bundle from '../components/widget/Bundle';
 import Cssmodule from '../components/cssmodule';
 import MapUi from '../components/ui/map';
-import AssetAllocationStrategy from '../views/products/assetAllocationStrategy';
+import {AssetAllocationStrategy, AasDetails} from '../views/products/assetAllocationStrategy';
+import FileInfoTable from '../components/tables/fileInfoTable';
 import FileInfoTable from '../views/file/info/fileInfoTable';
 import FileInfoTable2 from '../views/file/info/fileInfoTable2';
 import MarketRuleTable from '../views/market/rule/rule';
@@ -50,8 +51,9 @@ export default class CRouter extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/app/productsManagement/assetAllocationStrategy"
-                       component={AssetAllocationStrategy}/>
+                <Route exact path="/app/prodmgnt/aas" component={AssetAllocationStrategy}/>
+                <Route exact path="/app/prodmgnt/aas/details" component={AasDetails}/>
+
                 <Route exact path="/app/file/info/main" component={FileInfoTable}/>
                 <Route exact path="/app/file/info/main2" component={FileInfoTable2}/>
                 <Route exact path="/app/market/rule/main" component={MarketRuleTable}/>

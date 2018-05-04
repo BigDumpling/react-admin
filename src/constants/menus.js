@@ -326,7 +326,7 @@ export const menus = [
                 "method": "GET",
                 "name": "资产配置策略管理",
                 "order": 7,
-                "url": "/app/productsManagement/assetAllocationStrategy",
+                "url": "/app/prodmgnt/aas",
                 "icon": null,
                 "subMenus": []
             },
