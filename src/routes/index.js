@@ -27,8 +27,7 @@ import Wysiwyg from 'bundle-loader?lazy!../components/ui/Wysiwyg'; // 按需加�
 import Bundle from '../components/widget/Bundle';
 import Cssmodule from '../components/cssmodule';
 import MapUi from '../components/ui/map';
-import {AssetAllocationStrategy, AasDetails} from '../views/products/assetAllocationStrategy';
-import FileInfoTable from '../components/tables/fileInfoTable';
+import {AasDetails, AssetAllocationStrategy} from '../views/products/assetAllocationStrategy';
 import FileInfoTable from '../views/file/info/fileInfoTable';
 import FileInfoTable2 from '../views/file/info/fileInfoTable2';
 import MarketRuleTable from '../views/market/rule/rule';

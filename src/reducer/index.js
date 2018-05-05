@@ -15,7 +15,7 @@ const handleData = (state = {isFetching: true, data: {}}, action) => {
     }
 };
 const httpData = (state = {}, action) => {
-    console.log(`httpData httpData, state == ${JSON.stringify(state)}, action == ${JSON.stringify(action)}`);
+    Object.is('rules', action.category) && console.log(`httpData httpData, state == ${JSON.stringify(state)}, action == ${JSON.stringify(action)}`);
     switch (action.type) {
         case type.RECEIVE_DATA:
         case type.REQUEST_DATA:
