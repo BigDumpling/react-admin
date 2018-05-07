@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {AddPageButton, EditLink} from './ModalFormTriggers'
 import AasDetails from './AasDetails'
+import AasForm from './AasForm'
 
 const datalst = {
 	"data": [{
@@ -317,7 +318,7 @@ class AssetAllocationStrategy extends React.Component {
                         <div>
                             <Link to={path}>明细</Link>
                             <Divider type="vertical" />
-                            <EditLink entity={record} />
+                            <EditLink entity={record} realForm={AasForm} />
                         </div>
                     )
                 }
@@ -338,7 +339,7 @@ class AssetAllocationStrategy extends React.Component {
 
         return (
             <div className="asset-allocation-strategy">
-                <AddPageButton />
+                <AddPageButton realForm={AasForm} />
                 <Table 
                     columns={columns} 
                     dataSource={this.state.data} 

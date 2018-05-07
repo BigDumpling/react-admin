@@ -18,8 +18,9 @@ class EditableCell extends React.Component {
 
     handleChange(e) {
         const { refreshParentState, dataIndex } = this.props
-        const value = e.target.value;
-        this.setState({ value })
+        console.log(e)
+        //const value = e.target.value;
+        //this.setState({ value })
     }
 
     check() {
@@ -38,7 +39,7 @@ class EditableCell extends React.Component {
     render() {
         const Component = this.props.component
         const { value, editable } = this.state
-        const { defaultValue } = this.props
+        const { defaultValue, subComponents } = this.props
 
         return (
             <div>
@@ -52,6 +53,7 @@ class EditableCell extends React.Component {
                                     onChange={this.handleChange}
                                     onPressEnter={this.check}
                                 >
+                                { subComponents }
                                 </Component>
                                 <Icon
                                     type="check"
@@ -125,7 +127,7 @@ const EditableInput = (props) => (
 
 const EditableSelect = (props) => {
     return (
-        <EditableCell component={Select} value={props.value} onChange={props.onChange} defaultValue={props.defaultValue} subComponents={props.subComponents}/>
+        <EditableCell component={Select} value={props.value} onChange={props.onChange} defaultValue={props.defaultValue} subComponents={props.subComponents} />
     )
 }
     

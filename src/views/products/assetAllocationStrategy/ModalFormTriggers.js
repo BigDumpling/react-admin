@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'antd'
-import BasicForm from './BasicForm'
+import AasForm from './AasForm'
 
 
 class PageTrigger extends React.Component {
@@ -65,6 +65,7 @@ class PageTrigger extends React.Component {
     render() {
         const { visible, confirmLoading } = this.state
         const { type, entity } = this.props
+        const RealForm = this.props.realForm
         return (
             <div>
                 {
@@ -72,7 +73,7 @@ class PageTrigger extends React.Component {
                     (
                         <div>
                             <Button type="primary" onClick={this.showModal} className="editable-add-btn">添加</Button>
-                            <BasicForm
+                            <RealForm
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -87,7 +88,7 @@ class PageTrigger extends React.Component {
                     (
                         <div>
                             <a href="javascript:;" onClick={this.showModal}>编辑</a>
-                            <BasicForm
+                            <RealForm
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -116,12 +117,12 @@ class PageTrigger extends React.Component {
 }
 
 
-const AddPageButton = () => (
-    <PageTrigger type="add" />
+const AddPageButton = (props) => (
+    <PageTrigger type="add" realForm={props.realForm} />
 )
 
 const EditLink = (props) => (
-    <PageTrigger type="edit" entity={props.entity}/>
+    <PageTrigger type="edit" entity={props.entity} realForm={props.realForm} />
 )
 
 export {AddPageButton, EditLink}

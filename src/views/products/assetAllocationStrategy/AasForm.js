@@ -4,7 +4,7 @@ import { Button, Modal, Form, Input, Select } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 
-const BasicForm = Form.create()(class extends React.Component {
+const AasForm = Form.create()(class extends React.Component {
     componentDidMount() {
         const { entity } = this.props
         let propsObj = {}
@@ -109,4 +109,4 @@ const BasicForm = Form.create()(class extends React.Component {
 })
 
 
-export default BasicForm
+export default AasForm

@@ -1,18 +1,10 @@
 import React from 'react'
 import { Button, Popconfirm, Table, Divider, Select } from 'antd'
-import { EditableInput, EditableSelect } from '../../../components/EditableComponents'
-
-const Option = Select.Option
-
-const firstCode = ['a', 'b', 'c']
-const secondCode = {
-    a: ['a1', 'a2'],
-    b: ['b1', 'b2', 'b3'],
-    c: ['c1', 'c2', 'c3']
-}
-
-
+import AasDetailsForm from './AasDetailsForm'
+import {AddPageButton, EditLink} from './ModalFormTriggers'
 /*
+const firstCodeOptions = firstCode.map(item => <Option key={item}>{item}</Option>)
+
 const renderFirstCode = (text, record) => {
     // to do
     const firstCodeOptions = firstCode.map(item => <Option key={item}>{item}</Option>)
@@ -28,8 +20,8 @@ class AasDetails extends React.Component {
 
         this.handleDelete = this.handleDelete.bind(this)
         this.handleAdd = this.handleAdd.bind(this)
-        this.handleCreate = this.handleCreate.bind(this)
-        this.refreshState = this.refreshState.bind(this)
+        //this.handleCreate = this.handleCreate.bind(this)
+        //this.refreshStateInput = this.refreshStateInput.bind(this)
 
         this.state = {
             data: [],
@@ -40,7 +32,7 @@ class AasDetails extends React.Component {
     componentDidMount() {
         console.log('passed data', this.props.location.state)
         
-        // 模拟请求后端获取数据44
+        // 模拟请求后端获取数据
         if (this.props.location.state && this.props.location.state.record) {
             const { record } = this.props.location.state
             let data = []
@@ -48,9 +40,9 @@ class AasDetails extends React.Component {
                 data.push({
                     key: i,
                     strategyId: record.id,
-                    firstCode: 1,
-                    secondCode: 2,
-                    thirdCode: 3,
+                    firstCode: 'a',
+                    secondCode: 'a1',
+                    thirdCode: 'x',
                     proportion: 0.3,
                     status: "有效",
                     editable: 'true',
@@ -71,14 +63,15 @@ class AasDetails extends React.Component {
     }
 
     handleAdd() {
+        /*
         console.log('handle add')
         const tempData = this.state.data.concat({
             key: this.state.data.length,
             strategyId: this.state.entity.id,
-            firstCode: 1,
-            secondCode: 2,
-            thirdCode: 3,
-            proportion: 0.3,
+            firstCode: undefined,
+            secondCode: undefined,
+            thirdCode: undefined,
+            proportion: undefined,
             status: "有效",
             editable: 'true',
             createTime: '2017-03-25 21:13:00',
@@ -88,13 +81,14 @@ class AasDetails extends React.Component {
         this.setState({
             data: tempData
         })
+        */
     }
 
     handleCreate(record) {
-
     }
 
-    refreshState(record, index, newVal) {
+    /*
+    refreshStateInput(record, index, newVal) {
         const { data } = this.state
         const newData = data.map(item => {
             if (item.id !== undefined && item.id === record.id) {
@@ -114,6 +108,27 @@ class AasDetails extends React.Component {
         })
     }
 
+    refreshStateSelect(record, index, newVal) {
+        const { data } = this.state
+        const newData = data.map(item => {
+            if (item.id !== undefined && item.id === record.id) {
+                item[index] = newVal
+                return item
+            } 
+
+            if (item.key !== undefined && (item.key === record.key)) {
+                item[index] = newVal
+                return item
+            }
+            return item
+        })
+
+        this.setState({
+            data: newData
+        })
+    }
+    */
+
     render() {
         const { data } = this.state
 
@@ -121,27 +136,18 @@ class AasDetails extends React.Component {
             { 
                 title: '资产配置策略编号', 
                 dataIndex: 'strategyId', 
-                key: 'strategyId', 
-                render: (text, record) => true ?
-                    (<EditableInput 
-                        value={record.strategyId} 
-                        onChange={(newVal) => this.refreshState(record, 'strategyId', newVal)} 
-                    />) :
-                    (<div>{text}</div>)
+                key: 'strategyId'
             },
             { 
                 title: '一级分类码', 
                 dataIndex: 'firstCode', 
-                key: 'firstCode',
-                render: (text, record) => true ?
-                    (<EditableSelect 
-                        value={record.firstCode} 
-                        onChange={(newVal) => this.refreshState(record, 'firstCode', newVal)} 
-
-                    />) :
-                    (<div>{text}</div>)
+                key: 'firstCode'
             },
-            { title: '二级分类码', dataIndex: 'secondCode', key: 'secondCode' },
+            { 
+                title: '二级分类码', 
+                dataIndex: 'secondCode', 
+                key: 'secondCode'
+            },
             { title: '三级分类码', dataIndex: 'thirdCode', key: 'thirdCode' },
             { title: '四级分类码', dataIndex: 'thirdCode', key: 'thirdCode' },
             { title: '分配比率', dataIndex: 'proportion', key: 'proportion' },
@@ -160,15 +166,8 @@ class AasDetails extends React.Component {
                             <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(record)}>
                                 <a href="javascript:;">删除</a>
                             </Popconfirm>
-                            { 
-                                record.creating &&  <Divider type="vertical" />
-                            }
-                            {
-                                record.creating && 
-                                <Popconfirm title="确认添加?" onConfirm={() => this.handleCreate(record)}>
-                                    <a href="javascript:;">添加</a>
-                                </Popconfirm>
-                            }
+                            <Divider type="vertical" />
+                            <a href="javascript:;">编辑</a>
                         </div>
                     )
                 }
@@ -178,7 +177,8 @@ class AasDetails extends React.Component {
         return (
             <div>
             <div>
-                <Button type="primary" onClick={this.handleAdd} className="btn">添加</Button>
+                <AddPageButton realForm={AasDetailsForm}/>
+                
                 <Table 
                     columns={columns} 
                     dataSource={data}
